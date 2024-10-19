@@ -1,0 +1,73 @@
+﻿@model AppBank.Models.ViewModel.UserAccountVM;
+
+@{
+    ViewData["Title"] = "Editar Cuenta";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Editar Cuenta</h1>
+</div>
+
+<div class="box box-primary">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <div class="mg">
+                @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-primary mb-3" })
+            </div>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.UserID)
+            @Html.HiddenFor(model => model.DateCreate)
+
+            <div class="form-group">
+                <div class="col-12 col-md-12 col-sm-12 col-lg-6">
+                    @Html.LabelFor(model => model.Account, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="row">
+                <div class="col-12 col-md-12 col-sm-12 col-lg-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserNameComplete, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.UserNameComplete, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.UserNameComplete, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-sm-12 col-lg-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.UserPassword, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                            @Html.ValidationMessageFor(model => model.UserPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-sm-12 col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Crear" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    }
+</div>

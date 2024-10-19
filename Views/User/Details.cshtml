@@ -1,0 +1,48 @@
+﻿@model AppBank.Models.ViewModel.UserAccountVM;
+
+@{
+    ViewData["Title"] = "Detalle de la Cuenta";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Detalles de la Cuenta</h1>
+</div>
+
+<div class="box box-primary">
+    <div>
+        <div class="mg">
+            @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+        <hr />
+        <dl class="dl-horizontal text-center">
+            <dt>
+                @Html.DisplayNameFor(model => model.Account)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Account)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UserNameComplete)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.UserNameComplete)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Quantity)
+            </dd>
+            <dt>
+                    @Html.DisplayNameFor(model => model.DateCreate)
+            </dt>
+            <dd>
+                    @Html.DisplayFor(model => model.DateCreate)
+            </dd>
+
+        </dl>
+    </div>
+</div>
+

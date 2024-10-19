@@ -1,0 +1,99 @@
+﻿@model AppBank.Models.ViewModel.UserAccountVM;
+
+@{
+    ViewData["Title"] = "Retiro";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Retiros</h1>
+</div>
+
+<div class="box box-primary">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal text-center">
+            <div class="mg">
+                @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-primary mb-3" })
+            </div>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <h2>Tu Saldo Actual: @ViewBag.Total</h2>
+            <div class="text-center">
+                <div class="text-center">
+                    <div class="col-12 col-md-12 col-sm-12 col-lg-6">
+                        <input class="form-control" type="number" id="cashQuantity" placeholder="Monto a retirar" aria-label="Monto a retirar">
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <input id="btnRetirar" value="Retirar" class="btn btn-primary" />
+                    </div>
+                </div>
+                <br />
+                <div class="result" id="cashDetails"></div>
+                <br />
+                <input id="btnConfirm" value="Confirmar Retiro" class="btn btn-primary" style="display:none;" />
+
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const denominaciones = [1000, 500, 200, 100, 50, 20, 10, 5, 2, 1];
+            
+            $('#btnRetirar').click(function () {
+                showCash();
+            });
+
+            $("#btnConfirm").click(function () {
+                console.log("press btnConfirm");
+                let quantity = parseInt($('#cashQuantity').val());
+
+                $.ajax({
+                    url: '@Url.Action("UpdateSaldo", "Retiros")',
+                    method: 'POST',
+                    data: { decrementQuantity: quantity },
+                    success: function (response) {
+                        window.location.href = '@Url.Action("Index", "User")';
+                    },
+                    error: function () {
+                    }
+                });
+            });
+
+            function showCash() {
+                let quantity = parseInt($('#cashQuantity').val());
+                let result = '';
+                if (quantity > @ViewBag.Total) {
+                    result += `<h4>No puede ser entregado un valor mayor a su saldo</h4>`;
+                } else {
+                    result += `<h4>Efectivo a entregar:</h4>`;
+
+                    denominaciones.forEach(function (denominacion) {
+                        if (quantity >= denominacion) {
+                            let cantidadBilletes = Math.floor(quantity / denominacion);
+                            result += `<p>Denominación ${denominacion}: ${cantidadBilletes}</p>`;
+                            quantity -= cantidadBilletes * denominacion;
+                        }
+                    });
+                    // result += '<br />';
+                    // result += `<input id="btnConfirm" value="Confirmar Retiro" class="btn btn-primary" />`;
+                    $('#btnConfirm').show();
+
+                }
+
+                $('#cashDetails').html(result);
+
+            }
+
+            
+        
+        });
+    </script>
+}

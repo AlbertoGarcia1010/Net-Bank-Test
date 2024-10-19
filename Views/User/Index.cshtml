@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "Cuentas";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Cuentas</h1>
+</div>
+<div>
+    <a href="@Url.Content("~/")User/Create"><button type="button" class="btn btn-primary col-12 col-md-12 col-sm-12 col-lg-2"><i class="fa fa-plus" aria-hidden="true"></i> Agregar Cuenta</button></a>
+</div>
+<div class="text-center">
+    <div style="width:100%; margin:0 auto;" class="table-responsive">
+        <table class="table" id="tableAccounts" style="width:100%;">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("Cuenta")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Nombre Completo")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Saldo")
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tableAccounts').dataTable({
+                "autoWidth": true,
+                responsive: true,
+                "ajax": {
+                    "url": '@Url.Action("LoadAccounts", "User")',
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "language": {
+                    "lengthMenu": "Ver _MENU_ registros por pagina",
+                    "zeroRecords": "Registro no encontrado - Lo sentimos",
+                    "info": "Pagina _PAGE_ de _PAGES_",
+                    "infoEmpty": "No hay datos disponibles",
+                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                    "aria": {
+                        "sortAscending": ": activar para ordenar la columna ascendente",
+                        "sortDescending": ": activar para ordenar la columna decendente"
+                    },
+                    "loadingRecords": "Leyendo...",
+                    "processing": "Procesando...",
+                    "infoEmpty": "Visualizando 0 a 0 de 0 registros"
+                },
+                "columnDefs":
+                    [
+                        {
+                            "targets": [2, 3, 4],
+                            "searchable": false,
+                            "orderable": false
+                        }
+                    ],
+                "columns": [
+                    { "data": "account", "name": "Account", "autoWidth": true },
+                    { "data": "userNameComplete", "name": "UserNameComplete", "autoWidth": true },
+                    {
+                        "data": "quantity", "name": "Quantity", "autoWidth": true,
+                        "render": function (data, type, full, meta) {
+                            return `$ ${full.quantity}`;
+                        }
+                    },
+                    {
+                        "render": function (data, type, full, meta) {
+                            return '<a class="btn btn-primary" href="@Url.Content("~/")User/Edit/' + full.userID + '" title="Editar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
+                        }
+                    },
+                    {
+                        "render": function (data, type, full, meta) {
+                            return '<a class="btn btn-success" href="@Url.Content("~/")User/Details/' + full.userID + '" title="Detalle"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+                        }
+                    },
+                    {
+                        "render": function (data, type, full, meta) {
+                            return '<a class="btn btn-danger" href="@Url.Content("~/")User/Delete/' + full.userID + '" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                        }
+                    }
+
+                ],
+                "processing": true,
+                "serverSide": true,
+                "order": [[0, "desc"]]
+            });
+        });
+    </script>
+}
